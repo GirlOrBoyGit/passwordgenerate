@@ -1,0 +1,103 @@
+<html>
+<head>
+  <link rel="stylesheet" href="./style.css">
+  <title>Генератор Паролей</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="container">
+    <h1>Генирирует Пароль</h1>
+    <form name="form1" role="form">
+      <label>Пароль сгенирирован</label>
+      <input type="text" name="password" value="" size="20" style="width: 300px"><br /><br />
+
+      <label>Выберите, сколько цифер и букв нужно сгенирировать</label>
+      <select name="passwordlength">
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8" >8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+        <option value="20">20</option>
+      </select>
+      
+      <br />
+
+      <p><input type="checkbox" name="punc" checked> Без символов, пример #$%&@_</p>
+      <p><input type="checkbox" name="randomlength"> Рандом цифры от 6 до 12</p>
+      <p><input type="button" class="btn" value="Сгенерировать" onClick="PasswordGenerator.getPassword()"></p>
+    </form>
+  </div>
+
+  <script>
+  var PasswordGenerator = (function(){
+
+    function getRandomNum() {
+      var random = Math.random() // between 0 - 1
+      random = parseInt(random * 1000); // rndNum from 0 - 1000
+      random = (random % 94) + 33; // rndNum from 33 - 127
+      return random;
+    }
+
+    function checkPunc(num) {
+      if ((num >=  33) && (num <=  47)) { return true; }
+      if ((num >=  58) && (num <=  64)) { return true; }
+      if ((num >=  91) && (num <=  96)) { return true; }
+      if ((num >= 123) && (num <= 126)) { return true; }
+      return false;
+    }
+
+    var getPassword = function() {
+      if (parseInt(navigator.appVersion) <= 3) {
+        alert("Извините, это работает только в браузерах 4.0+ версии!");
+        return true;
+      }
+
+      var length = 8;
+      var password = "";
+      length = document.form1.passwordlength.options[document.form1.passwordlength.selectedIndex].value;
+
+      var noPunction = (document.form1.punc.checked);
+      var randomLength = (document.form1.randomlength.checked);
+
+      if (randomLength) {
+        length = Math.random();
+        length = parseInt(length * 100);
+        length = (length % 7) + 6
+      }
+
+      for (i=0; i < length; i++) {
+        n = getRandomNum();
+        if (noPunction) {
+          while (checkPunc(n)) {
+            n = getRandomNum();
+          }
+        }
+        password = password + String.fromCharCode(n);
+      }
+      document.form1.password.value = password
+      return true;
+    }
+
+    return {
+      getPassword: getPassword
+    }
+
+  }());
+  
+  </script>
+</body>
+</html>
+
+<div class="footer"> <h1 class="s-m-title">ЗАПОМНИ!</h1> <p class="s-m-descritpion"> Мы не сохраняем пароли, мы не сохраняем Cookie. Только современная безопасность и технологии. </p>
